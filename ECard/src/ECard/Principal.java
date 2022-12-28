@@ -5,6 +5,6 @@ public class Principal {
 		
 		inicial i = new inicial();
 		i.setVisible(true);
-		//Mario:hola
+		//Mario:hola!
 	}
 }
