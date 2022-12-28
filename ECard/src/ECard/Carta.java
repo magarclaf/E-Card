@@ -11,5 +11,7 @@ public class Carta {
 	public String getTipo() {
 		return this.tipo;
 	}
+	
+	//tokens
 
 }
