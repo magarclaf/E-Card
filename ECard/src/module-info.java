@@ -6,4 +6,5 @@
  *
  */
 module ECard {
+	requires java.desktop;
 }
