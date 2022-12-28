@@ -12,6 +12,6 @@ public class Carta {
 		return this.tipo;
 	}
 	
-	//tokensssssss
+	//tokenssssssss
 
 }
