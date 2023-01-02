@@ -1,7 +1,6 @@
 package ECard;
 
 public class main {
-
 	
-	//hola NO
+	//hola Na
 }
