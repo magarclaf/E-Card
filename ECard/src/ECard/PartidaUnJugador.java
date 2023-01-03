@@ -19,8 +19,6 @@ public class PartidaUnJugador extends JFrame {
 	private static int contadorJugador=0;
 	private static int contadorCPU=0;
 	private final static String espaciosBlanco="                                     ";
-	private final static String ladoEmperor="lEmperor";
-	private final static String ladoSlave="lSlave";
 	private static JButton emperor;//Numero 1
 	private static JButton citizen1;//Numero 2
 	private static JButton citizen2;//Numero 3
@@ -37,6 +35,11 @@ public class PartidaUnJugador extends JFrame {
 	private static JPanel panelIzquierda;
 	private JPanel panelCentro;
 	private static JLabel resultado;
+	private static int ronda=0;//Grande --> Emperador/Esclavo/Emperador/Esclavo
+	private static int turno=0;//Medio --> 3 con emperador, 3 con esclavo, ...
+	private static int jugada=0;//Pequeño --> Máx. 5 jugadas (VS)
+	private static boolean ladoEmperador=true;
+	private static boolean seguimos=false;
 	
 	public PartidaUnJugador() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\Kaiji\\zawa.png"));
@@ -65,12 +68,10 @@ public class PartidaUnJugador extends JFrame {
 //			iconEmperor = new ImageIcon(imgE);
 //			iconSlave = new ImageIcon(imgS);
 //			
-//		} catch (MalformedURLException e) {
-//			// TODO Auto-generated catch block
+//		} catch (MalformedURLException e) {			
 //			e.printStackTrace();
 //		}	
 //		 catch (IOException e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 		
@@ -104,6 +105,8 @@ public class PartidaUnJugador extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado=1;
 				emperor.setVisible(false);
+				AJugar();
+				estadoPartida();
 			}
 		});
 	    emperor.setPreferredSize(d);
@@ -113,6 +116,8 @@ public class PartidaUnJugador extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado=2;
 				citizen1.setVisible(false);
+				AJugar();
+				estadoPartida();
 			}
 		});
 		citizen1.setPreferredSize(d);
@@ -122,6 +127,8 @@ public class PartidaUnJugador extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado=3;
 				citizen2.setVisible(false);
+				AJugar();
+				estadoPartida();
 			}
 		});
 		citizen2.setPreferredSize(d);
@@ -131,6 +138,8 @@ public class PartidaUnJugador extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado=4;
 				citizen3.setVisible(false);
+				AJugar();
+				estadoPartida();
 			}
 		});
 		citizen3.setPreferredSize(d);
@@ -140,6 +149,8 @@ public class PartidaUnJugador extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado=5;
 				citizen4.setVisible(false);
+				AJugar();
+				estadoPartida();
 			}
 		});
 		citizen4.setPreferredSize(d);
@@ -151,22 +162,62 @@ public class PartidaUnJugador extends JFrame {
 		
 		
 		slave = new JButton(iconSlave);
+		slave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numeroJugado=10;
+				slave.setVisible(false);
+				AJugar();
+				estadoPartida();
+			}
+		});
 		slave.setEnabled(false);
 		slave.setPreferredSize(d);
 		panelEsclavo.add(slave);
 		citizen11 = new JButton(iconCitizen);
+		citizen11.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numeroJugado=6;
+				citizen11.setVisible(false);
+				AJugar();
+				estadoPartida();
+			}
+		});
 		citizen11.setEnabled(false);
 		citizen11.setPreferredSize(d);
 		panelEsclavo.add(citizen11);
 		citizen22 = new JButton(iconCitizen);
+		citizen22.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numeroJugado=7;
+				citizen22.setVisible(false);
+				AJugar();
+				estadoPartida();
+			}
+		});
 		citizen22.setEnabled(false);
 		citizen22.setPreferredSize(d);
 		panelEsclavo.add(citizen22);
 		citizen33 = new JButton(iconCitizen);
+		citizen33.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numeroJugado=8;
+				citizen33.setVisible(false);
+				AJugar();
+				estadoPartida();
+			}
+		});
 		citizen33.setEnabled(false);
 		citizen33.setPreferredSize(d);
 		panelEsclavo.add(citizen33);
 		citizen44 = new JButton(iconCitizen);
+		citizen44.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numeroJugado=9;
+				citizen44.setVisible(false);
+				AJugar();
+				estadoPartida();
+			}
+		});
 		citizen44.setEnabled(false);
 		citizen44.setPreferredSize(d);
 		panelEsclavo.add(citizen44);
@@ -193,7 +244,7 @@ public class PartidaUnJugador extends JFrame {
 		//Encajona las piezas del JFrame
 		pack();
 		
-		AJugar();
+		//AJugar();
 	}
 	
 	//main que invoca al constructor y lo muestra
@@ -205,76 +256,71 @@ public class PartidaUnJugador extends JFrame {
 	
 	
 	public static void AJugar() {
-		int ronda = 0;
-		int turno = 0;
 		int numeroJugadoCPU = 0;
-		boolean ladoEmperador = true;
-		boolean seguimos = false;
-		// 4 turnos distintos
-		while (turno < 4) {
-			// 3 rondas seguidas en el mismo lado
-			while (ronda < 3) {
-				//La CPU eligira un numero según el lado en el que se encuentre
-				if (ladoEmperador) {
-					numeroJugadoCPU = cartaJugadaladoEsclavoCPU();
+		// La CPU eligira un numero según el lado en el que se encuentre
+		if (ladoEmperador) {
+			numeroJugadoCPU = cartaJugadaladoEsclavoCPU();
+		} else {
+			numeroJugadoCPU = cartaJugadaladoEmperadorCPU();
+		}
+		// se juega la partida de un lado
+		if (ladoEmperador) {
+			// Si uso emperador ---> o pierdo contra esclavo (10) o gano contra ciudadano
+			// (6-9)
+			if (numeroJugado == 1) {
+				if (numeroJugadoCPU == 10) {
+					contadorCPU = contadorCPU + 3;
 				} else {
-					numeroJugadoCPU = cartaJugadaladoEmperadorCPU();
+					contadorJugador++;
 				}
 
-				// se juega la partida de un lado
-				if (ladoEmperador) {
-					// Si uso emperador ---> o pierdo contra esclavo (10) o gano contra ciudadano (6-9)
-					if (numeroJugado == 1) {
-						if (numeroJugadoCPU == 10) {
-							contadorCPU = contadorCPU + 4;
-						} else {
-							contadorJugador++;
-						}
-
-						// Si uso ciudadano ---> o gano al esclavo (10) o empato al ciudadano (6-9)
-					} else {
-						if (numeroJugadoCPU == 10) {
-							contadorJugador++;
-						} else {
-							seguimos = true;
-						}
-					}
-
+				// Si uso ciudadano ---> o gano al esclavo (10) o empato al ciudadano (6-9)
+			} else {
+				if (numeroJugadoCPU == 10) {
+					contadorJugador++;
 				} else {
-					// Si uso esclavo ---> o gano al emperador (1) o pierdo contra el ciudadano (2-5)
-					if (numeroJugado == 10) {
-						if (numeroJugadoCPU == 1) {
-							contadorJugador = contadorJugador + 4;
-						} else {
-							contadorCPU++;
-						}
-						// Si uso ciudadano ---> o pierdo contra el emperador (1) o empato al ciudadano (2-5)
-					} else {
-						if (numeroJugadoCPU == 1) {
-							contadorCPU++;
-						} else {
-							seguimos = true;
-						}
-					}
+					seguimos = true;
 				}
-				//Actualizamos el resultado
-				resultado.setText(espaciosBlanco+contadorJugador+"-"+contadorCPU);
-				//Quitamos el boton que ha usado la maquina
-				botonUsado(numeroJugadoCPU).setVisible(false);
-				//si seguimos no avanzamos de ronda, si ya tenemos resultado volvemos las cosas como estaban y empezamos nueva ronda
-				if (seguimos) {
-					seguimos = false;
-				} else {
-					if (ladoEmperador) {
-						visibilidadLadoEmperador();
-					} else {
-						visibilidadLadoEsclavo();
-					}
-					ronda++;
-				}
-
 			}
-			//al terminar las 3 rondas del turno correspondiente cambiamos de lado dandole la visibilidad correspondiente
+
+		} else {
+			// Si uso esclavo ---> o gano al emperador (1) o pierdo contra el ciudadano
+			// (2-5)
+			if (numeroJugado == 10) {
+				if (numeroJugadoCPU == 1) {
+					contadorJugador = contadorJugador + 3;
+				} else {
+					contadorCPU++;
+				}
+				// Si uso ciudadano ---> o pierdo contra el emperador (1) o empato al ciudadano
+				// (2-5)
+			} else {
+				if (numeroJugadoCPU == 1) {
+					contadorCPU++;
+				} else {
+					seguimos = true;
+				}
+			}
+		}
+
+		// Actualizamos el resultado
+		resultado.setText(espaciosBlanco + contadorJugador + "-" + contadorCPU);
+		// Quitamos el boton que ha usado la maquina
+		botonUsado(numeroJugadoCPU).setVisible(false);			
+	}
+	
+	public static void estadoPartida() {
+		jugada++;
+		if(!seguimos) {
+			if (ladoEmperador) {
+				visibilidadLadoEmperador();
+			} else {
+				visibilidadLadoEsclavo();
+			}
+			jugada=0;
+			turno++;
+		}
+		if(turno==3) {
 			if (ladoEmperador) {
 				ladoEmperador = false;
 				visibilidadLadoEsclavo();
@@ -282,10 +328,23 @@ public class PartidaUnJugador extends JFrame {
 				ladoEmperador = true;
 				visibilidadLadoEmperador();
 			}
-			turno++;
+			ronda++;
+			turno=0;
 		}
+		if (ronda == 4) {
+			if (contadorJugador > contadorCPU) {
+				JOptionPane.showMessageDialog(null, "Resultado: " + resultado.getText().replaceAll("\s+","") + " - Ganaste, menos mal...");
+				
+			} else {
+				JOptionPane.showMessageDialog(null, "Resultado: " + resultado.getText().replaceAll("\s+","") + " - No has ganado a la CPU, que basura!");
+			}
+			contadorJugador=0;contadorCPU=0;
+			resultado.setText(espaciosBlanco + contadorJugador + "-" + contadorCPU);
+			ronda = 0;
+		}
+		seguimos=false;
 	}
-	
+
 	//Da visibilidad al lado Emperador e inutiliza el otro lado
 	public static void visibilidadLadoEmperador() {
 		ponerCartasVisibles();
@@ -333,18 +392,31 @@ public class PartidaUnJugador extends JFrame {
 	//Metodos para conseguir un numero random asociado a una de las cartas 
 	//del lado que le toca jugar a la CPU
 	public static int cartaJugadaladoEsclavoCPU() {
-		 return (int)(Math.random()*(10-6+1)+6);
+		if((int)(Math.random()*((5-jugada)-1+1)+1) == 1){
+		    return 10;
+		}
+		else
+		    return jugada+6;
+		
+		//return (int)(Math.random()*(10-6+1)+6);
 	}
 	
 	public static int cartaJugadaladoEmperadorCPU() {
-		return (int)(Math.random()*(5-1+1)+1);
+		
+		if((int)(Math.random()*((5-jugada)-1+1)+1) == 1){
+		    return 1;
+		}
+		else
+		    return jugada+2;
+		
+		//return (int)(Math.random()*(5-1+1)+1);
 	}
 	
 	
 	//cada boton tiene un numero asociado (lo pone en la declaracion de las variables)
 	public static JButton botonUsado(int numeroAsignado) {
 		if (numeroAsignado == 1) {
-			return slave;
+			return emperor;
 		}
 		if (numeroAsignado == 2) {
 			return citizen1;
@@ -375,5 +447,103 @@ public class PartidaUnJugador extends JFrame {
 		}
 		return null;
 	}
+	
+//	public static void AJugar() {
+//		int ronda = 0;
+//		int turno = 0;
+//		int jugada = 0;
+//		int numeroJugadoCPU = 0;
+//		boolean ladoEmperador = true;
+//		boolean seguimos = false;
+//		
+//		// 4 rondas distintos
+//		while (ronda < 4) {
+//			if(botonPulsado) {
+//			// 3 turnos seguidas en el mismo lado
+//			while (turno < 3) {
+//				if (botonPulsado) {
+//				while (seguimos && jugada < 5) {
+//					if (botonPulsado) {
+//						// La CPU eligira un numero según el lado en el que se encuentre
+//						if (ladoEmperador) {
+//							numeroJugadoCPU = cartaJugadaladoEsclavoCPU(turno);
+//						} else {
+//							numeroJugadoCPU = cartaJugadaladoEmperadorCPU(turno);
+//						}
+//
+//						// se juega la partida de un lado
+//						if (ladoEmperador) {
+//							// Si uso emperador ---> o pierdo contra esclavo (10) o gano contra ciudadano
+//							// (6-9)
+//							if (numeroJugado == 1) {
+//								if (numeroJugadoCPU == 10) {
+//									contadorCPU = contadorCPU + 3;
+//								} else {
+//									contadorJugador++;
+//								}
+//
+//								// Si uso ciudadano ---> o gano al esclavo (10) o empato al ciudadano (6-9)
+//							} else {
+//								if (numeroJugadoCPU == 10) {
+//									contadorJugador++;
+//								} else {
+//									seguimos = true;
+//								}
+//							}
+//
+//						} else {
+//							// Si uso esclavo ---> o gano al emperador (1) o pierdo contra el ciudadano
+//							// (2-5)
+//							if (numeroJugado == 10) {
+//								if (numeroJugadoCPU == 1) {
+//									contadorJugador = contadorJugador + 3;
+//								} else {
+//									contadorCPU++;
+//								}
+//								// Si uso ciudadano ---> o pierdo contra el emperador (1) o empato al ciudadano
+//								// (2-5)
+//							} else {
+//								if (numeroJugadoCPU == 1) {
+//									contadorCPU++;
+//								} else {
+//									seguimos = true;
+//								}
+//							}
+//						}
+//						botonPulsado = false;
+//					}
+//					// Actualizamos el resultado
+//					resultado.setText(espaciosBlanco + contadorJugador + "-" + contadorCPU);
+//					// Quitamos el boton que ha usado la maquina
+//					botonUsado(numeroJugadoCPU).setVisible(false);
+//					// si seguimos no avanzamos de ronda, si ya tenemos resultado volvemos las cosas
+//					// como estaban y empezamos nueva ronda
+//				}
+//				if (seguimos) {
+//					seguimos = false;
+//				} else {
+//					if (ladoEmperador) {
+//						visibilidadLadoEmperador();
+//					} else {
+//						visibilidadLadoEsclavo();
+//					}
+//					turno++;
+//				}
+//				}
+//
+//			}
+//			// al terminar las 3 rondas del turno correspondiente cambiamos de lado dandole
+//			// la visibilidad correspondiente
+//			if (ladoEmperador) {
+//				ladoEmperador = false;
+//				visibilidadLadoEsclavo();
+//			} else {
+//				ladoEmperador = true;
+//				visibilidadLadoEmperador();
+//			}
+//			ronda++;
+//			}
+//		}
+//	}
 
 }
