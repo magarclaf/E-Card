@@ -74,36 +74,6 @@ public class menu extends JFrame {
 		contentPane.add(layeredPanel);
 		layeredPanel.setLayout(null);
 		
-		panelReglas = new JPanel();
-		panelReglas.setBackground(new Color(255, 250, 205));
-		panelReglas.setBounds(0, 0, 652, 593);
-		layeredPanel.add(panelReglas);
-		panelReglas.setLayout(null);
-		
-		JLabel lblNewLabel_3 = new JLabel("REGLAS E-CARD");
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 32));
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3.setBounds(162, 22, 335, 57);
-		panelReglas.add(lblNewLabel_3);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 83, 632, 458);
-		panelReglas.add(scrollPane);
-		
-		JTextPane txtpnAquIrnLas = new JTextPane();
-		scrollPane.setViewportView(txtpnAquIrnLas);
-		txtpnAquIrnLas.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtpnAquIrnLas.setText("\tAquí irán las reglas del juego\r\n\tbla bla bla bla bla\r\n\t\r\nAPARTADO 1:\r\n\tReglas iniciales\r\n\tMás reglas\r\n\t\r\nAPARTADO 2:\r\n\tXDXDXDXDXDXDXDDDDDDDDDDDDDDDDDDDDDDDDD\r\n\t\r\nAPARTADO 3:\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN");
-		
-		JButton btnNewButton_1 = new JButton("Menú principal");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				switchPanels(panelMenu);
-			}
-		});
-		btnNewButton_1.setBounds(487, 559, 134, 23);
-		panelReglas.add(btnNewButton_1);
-		
 		panelMenu = new JPanel();
 		panelMenu.setBackground(new Color(238, 232, 170));
 		panelMenu.setBounds(0, 0, 652, 593);
@@ -119,6 +89,14 @@ public class menu extends JFrame {
 		panelMenu.add(lblNewLabel_2_1);
 		
 		JButton btUno = new JButton("Un jugador");
+		btUno.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PartidaUnJugador puj = new PartidaUnJugador();
+				puj.setVisible(true);
+				puj.toFront();
+				dispose();
+			}
+		});
 		btUno.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btUno.setBounds(220, 177, 200, 40);
 		panelMenu.add(btUno);
@@ -204,6 +182,36 @@ public class menu extends JFrame {
 				switchPanels(panelMenu);
 			}
 		});
+		
+		panelReglas = new JPanel();
+		panelReglas.setBackground(new Color(255, 250, 205));
+		panelReglas.setBounds(0, 0, 652, 593);
+		layeredPanel.add(panelReglas);
+		panelReglas.setLayout(null);
+		
+		JLabel lblNewLabel_3 = new JLabel("REGLAS E-CARD");
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 32));
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3.setBounds(162, 22, 335, 57);
+		panelReglas.add(lblNewLabel_3);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 83, 632, 458);
+		panelReglas.add(scrollPane);
+		
+		JTextPane txtpnAquIrnLas = new JTextPane();
+		scrollPane.setViewportView(txtpnAquIrnLas);
+		txtpnAquIrnLas.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txtpnAquIrnLas.setText("\tAquí irán las reglas del juego\r\n\tbla bla bla bla bla\r\n\t\r\nAPARTADO 1:\r\n\tReglas iniciales\r\n\tMás reglas\r\n\t\r\nAPARTADO 2:\r\n\tXDXDXDXDXDXDXDDDDDDDDDDDDDDDDDDDDDDDDD\r\n\t\r\nAPARTADO 3:\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN");
+		
+		JButton btnNewButton_1 = new JButton("Menú principal");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				switchPanels(panelMenu);
+			}
+		});
+		btnNewButton_1.setBounds(487, 559, 134, 23);
+		panelReglas.add(btnNewButton_1);
 		
 		switchPanels(panelIntro);
 	}
