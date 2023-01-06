@@ -8,6 +8,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.Window.Type;
 import java.awt.event.ActionListener;
@@ -40,6 +43,7 @@ public class PartidaUnJugador extends JFrame {
 	private static int jugada=0;//Pequeño --> Máx. 5 jugadas (VS)
 	private static boolean ladoEmperador=true;
 	private static boolean seguimos=false;
+	
 	
 	public PartidaUnJugador() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\Kaiji\\zawa.png"));
@@ -86,6 +90,11 @@ public class PartidaUnJugador extends JFrame {
 //		ImageIcon imageIcon = new ImageIcon(dimg);
 //		JLabel fondo=new JLabel(imageIcon);
 //		setContentPane(fondo);
+		
+		
+		 
+		
+		
 		
 		//Dimension para que los botones tengan el tamaño de sus iconos (las cartas)
 		Dimension d = new Dimension(72,96);
@@ -253,6 +262,18 @@ public class PartidaUnJugador extends JFrame {
 		e.setVisible(true);
 		
 	}
+	//Sonido al pulsar botones , usado en estadoPartida (3ª linea)
+	public static void playSound(String soundName) {
+		try {
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (Exception ex) {
+			System.out.println("Error with playing sound.");
+			ex.printStackTrace();
+		}
+	}
 	
 	
 	public static void AJugar() {
@@ -312,6 +333,7 @@ public class PartidaUnJugador extends JFrame {
 	public static void estadoPartida() {
 		jugada++;
 		if(!seguimos) {
+			playSound("D:\\Users\\mgarc\\git\\E-Card\\zawazawa.wav");
 			if (ladoEmperador) {
 				visibilidadLadoEmperador();
 			} else {
