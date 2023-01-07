@@ -18,8 +18,8 @@ import java.awt.event.ActionEvent;
 
 public class PartidaMultijugador extends JFrame {
 	
-	private static String numeroJugado="";
-	private static String numeroPasadoPorElRival="";
+	private static String numeroJugado;
+	private static String numeroPasadoPorElRival;
 	private static int contadorJugador=0;
 	private static int contadorRival=0;
 	private final static String espaciosBlanco="                                     ";
@@ -44,11 +44,12 @@ public class PartidaMultijugador extends JFrame {
 	private static int jugada=0;//Pequeño --> Máx. 5 jugadas (VS)
 	private static boolean ladoEmperador=true;
 	private static boolean seguimos=false;
-	Socket con;
-	String nombreJugador1;
-	String nombreJugador2;
-	DataInputStream dis;
-	DataOutputStream dos;
+	private static Socket con;
+	private static String nombreJugador1;
+	private static String nombreJugador2;
+	private static DataInputStream dis;
+	private static DataOutputStream dos;
+	String aux;
 	
 	
 	@SuppressWarnings("deprecation")
@@ -60,8 +61,9 @@ public class PartidaMultijugador extends JFrame {
 		try{
 		dis = new DataInputStream(con.getInputStream());
 		dos = new DataOutputStream(con.getOutputStream());
-		dos.writeBytes(nombreJugador1+"/r/n");
-		nombreJugador2=dis.readLine();
+		dos.writeBytes(nombreJugador1+"\r\n");
+		dos.flush();
+		nombreJugador2=dis.readLine();		
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\Kaiji\\zawa.png"));
 		setTitle("E-Card Multijugador");
@@ -89,28 +91,37 @@ public class PartidaMultijugador extends JFrame {
 				numeroJugado="1";
 				emperor.setVisible(false);
 				try {
-					dos.writeBytes(numeroJugado);
-					numeroPasadoPorElRival=dis.readLine();
-					
+					dos.writeBytes(numeroJugado+"\r\n");
+					dos.flush();
+					aux = dis.readLine();
+					while(aux.equals("")) {
+						aux = dis.readLine();
+					}
+					numeroPasadoPorElRival=aux;
+					AJugar(numeroPasadoPorElRival);
+					estadoPartida();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				AJugar(numeroPasadoPorElRival);
-				estadoPartida();
 			}
 		});
 	    emperor.setPreferredSize(d);
-		panelEmperador.add(emperor);
+		panelEmperador.add(emperor);		
+		
 		citizen1 = new JButton(iconCitizen);
 		citizen1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado="2";
 				citizen1.setVisible(false);
 				try {
-					dos.writeBytes(numeroJugado);
-					numeroPasadoPorElRival=dis.readLine();
+					dos.writeBytes(numeroJugado+"\r\n");
+					dos.flush();
+					aux = dis.readLine();
+					while(aux.equals("")) {
+						aux = dis.readLine();
+					}
+					numeroPasadoPorElRival=aux;
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -128,8 +139,13 @@ public class PartidaMultijugador extends JFrame {
 				numeroJugado="3";
 				citizen2.setVisible(false);
 				try {
-					dos.writeBytes(numeroJugado);
-					numeroPasadoPorElRival=dis.readLine();
+					dos.writeBytes(numeroJugado+"\r\n");
+					dos.flush();
+					aux = dis.readLine();
+					while(aux.equals("")) {
+						aux = dis.readLine();
+					}
+					numeroPasadoPorElRival=aux;
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -147,13 +163,17 @@ public class PartidaMultijugador extends JFrame {
 				numeroJugado="4";
 				citizen3.setVisible(false);
 				try {
-					dos.writeBytes(numeroJugado);
-					numeroPasadoPorElRival=dis.readLine();
+					dos.writeBytes(numeroJugado+"\r\n");
+					dos.flush();
+					aux = dis.readLine();
+					while(aux.equals("")) {
+						aux = dis.readLine();
+					}
+					numeroPasadoPorElRival=aux;
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
 				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
@@ -166,8 +186,13 @@ public class PartidaMultijugador extends JFrame {
 				numeroJugado="5";
 				citizen4.setVisible(false);
 				try {
-					dos.writeBytes(numeroJugado);
-					numeroPasadoPorElRival=dis.readLine();
+					dos.writeBytes(numeroJugado+"\r\n");
+					dos.flush();
+					aux = dis.readLine();
+					while(aux.equals("")) {
+						aux = dis.readLine();
+					}
+					numeroPasadoPorElRival=aux;
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -191,8 +216,13 @@ public class PartidaMultijugador extends JFrame {
 				numeroJugado="10";
 				slave.setVisible(false);
 				try {
-					dos.writeBytes(numeroJugado);
-					numeroPasadoPorElRival=dis.readLine();
+					dos.writeBytes(numeroJugado+"\r\n");
+					dos.flush();
+					aux = dis.readLine();
+					while(aux.equals("")) {
+						aux = dis.readLine();
+					}
+					numeroPasadoPorElRival=aux;
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -211,8 +241,13 @@ public class PartidaMultijugador extends JFrame {
 				numeroJugado="6";
 				citizen11.setVisible(false);
 				try {
-					dos.writeBytes(numeroJugado);
-					numeroPasadoPorElRival=dis.readLine();
+					dos.writeBytes(numeroJugado+"\r\n");
+					dos.flush();
+					aux = dis.readLine();
+					while(aux.equals("")) {
+						aux = dis.readLine();
+					}
+					numeroPasadoPorElRival=aux;
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -231,8 +266,13 @@ public class PartidaMultijugador extends JFrame {
 				numeroJugado="7";
 				citizen22.setVisible(false);
 				try {
-					dos.writeBytes(numeroJugado);
-					numeroPasadoPorElRival=dis.readLine();
+					dos.writeBytes(numeroJugado+"\r\n");
+					dos.flush();
+					aux = dis.readLine();
+					while(aux.equals("")) {
+						aux = dis.readLine();
+					}
+					numeroPasadoPorElRival=aux;
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -251,8 +291,13 @@ public class PartidaMultijugador extends JFrame {
 				numeroJugado="8";
 				citizen33.setVisible(false);
 				try {
-					dos.writeBytes(numeroJugado);
-					numeroPasadoPorElRival=dis.readLine();
+					dos.writeBytes(numeroJugado+"\r\n");
+					dos.flush();
+					aux = dis.readLine();
+					while(aux.equals("")) {
+						aux = dis.readLine();
+					}
+					numeroPasadoPorElRival=aux;
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -271,8 +316,13 @@ public class PartidaMultijugador extends JFrame {
 				numeroJugado="9";
 				citizen44.setVisible(false);
 				try {
-					dos.writeBytes(numeroJugado);
-					numeroPasadoPorElRival=dis.readLine();
+					dos.writeBytes(numeroJugado+"\r\n");
+					dos.flush();
+					aux = dis.readLine();
+					while(aux.equals("")) {
+						aux = dis.readLine();
+					}
+					numeroPasadoPorElRival=aux;
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -319,24 +369,12 @@ public class PartidaMultijugador extends JFrame {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
 	} 
-//		finally {
-//
-//		try {
-//			if (s != null) {
-//				s.close();
-//			}
-//
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//	}
 		
 	}
 	
 	
 	public static void AJugar(String numeroJugadorvl) {
+		JOptionPane.showMessageDialog(null,"El número recibido es: " + numeroPasadoPorElRival);
 		int numeroJugadoRival = Integer.parseInt(numeroJugadorvl);
 		int numeroJugadoYo = Integer.parseInt(numeroJugado);
 		// se juega la partida de un lado
@@ -364,7 +402,7 @@ public class PartidaMultijugador extends JFrame {
 			// (2-5)
 			if (numeroJugadoYo == 10) {
 				if (numeroJugadoRival == 1) {
-					contadorJugador = contadorJugador + 3;
+					contadorJugador = contadorJugador + 5;
 				} else {
 					contadorRival++;
 				}

@@ -102,7 +102,7 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				switchPanels(panelEspera);
 				try(ServerSocket server = new ServerSocket(7777)){
-					Boolean c = false;
+//					Boolean c = false;
 //					while(!c) {
 //						try{
 								Socket s = server.accept();
