@@ -8,9 +8,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.Window.Type;
 import java.awt.event.ActionListener;
@@ -44,57 +41,13 @@ public class PartidaUnJugador extends JFrame {
 	private static boolean ladoEmperador=true;
 	private static boolean seguimos=false;
 	
-	
 	public PartidaUnJugador() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\Kaiji\\zawa.png"));
 		setTitle("E-Card Un Jugador");
 		setType(Type.POPUP);
 		setResizable(false);
 		setExtendedState(Frame.MAXIMIZED_BOTH);
-		
-//		this.lado=lado;
-		
-//		URL urlC;
-//		URL urlE;
-//		URL urlS;
-//		ImageIcon iconCitizen = null;
-//		ImageIcon iconSlave = null;
-//		ImageIcon iconEmperor = null;
-//		try{
-//			urlC = new URL("https://github.com/magarclaf/E-Card/blob/master/citizen-scaled.jpg");
-//			BufferedImage imgC = ImageIO.read(urlC);
-//			urlE = new URL("https://github.com/magarclaf/E-Card/blob/master/emperor-scaled.jpg");
-//			BufferedImage imgE = ImageIO.read(urlE);
-//			urlS = new URL("https://github.com/magarclaf/E-Card/blob/master/slave-scaled.jpg");
-//			BufferedImage imgS = ImageIO.read(urlS);
-//			
-//			iconCitizen = new ImageIcon(imgC);
-//			iconEmperor = new ImageIcon(imgE);
-//			iconSlave = new ImageIcon(imgS);
-//			
-//		} catch (MalformedURLException e) {			
-//			e.printStackTrace();
-//		}	
-//		 catch (IOException e) {
-//			e.printStackTrace();
-//		}
-		
-		//Codigo para poner el background a la ventana
-//		BufferedImage img = null;
-//		try {
-//		    img = ImageIO.read(new File("D:\\Desktop\\Weeb\\fondos\\las-quintillizas.jpg"));
-//		} catch (IOException e) {
-//		    e.printStackTrace();
-//		}
-//		Image dimg = img.getScaledInstance(800, 508, Image.SCALE_DEFAULT);
-//		ImageIcon imageIcon = new ImageIcon(dimg);
-//		JLabel fondo=new JLabel(imageIcon);
-//		setContentPane(fondo);
-		
-		
-		 
-		
-		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//Dimension para que los botones tengan el tamaño de sus iconos (las cartas)
 		Dimension d = new Dimension(72,96);
@@ -262,18 +215,6 @@ public class PartidaUnJugador extends JFrame {
 		e.setVisible(true);
 		
 	}
-	//Sonido al pulsar botones , usado en estadoPartida (3ª linea)
-	public static void playSound(String soundName) {
-		try {
-			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioInputStream);
-			clip.start();
-		} catch (Exception ex) {
-			System.out.println("Error with playing sound.");
-			ex.printStackTrace();
-		}
-	}
 	
 	
 	public static void AJugar() {
@@ -333,7 +274,6 @@ public class PartidaUnJugador extends JFrame {
 	public static void estadoPartida() {
 		jugada++;
 		if(!seguimos) {
-			playSound("D:\\Users\\mgarc\\git\\E-Card\\zawazawa.wav");
 			if (ladoEmperador) {
 				visibilidadLadoEmperador();
 			} else {
