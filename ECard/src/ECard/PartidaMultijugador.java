@@ -2,6 +2,8 @@ package ECard;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -16,9 +18,10 @@ import java.awt.event.ActionEvent;
 
 public class PartidaMultijugador extends JFrame {
 	
-	private static int numeroJugado=0;
+	private static String numeroJugado="";
+	private static String numeroPasadoPorElRival="";
 	private static int contadorJugador=0;
-	private static int contadorCPU=0;
+	private static int contadorRival=0;
 	private final static String espaciosBlanco="                                     ";
 	private static JButton emperor;//Numero 1
 	private static JButton citizen1;//Numero 2
@@ -44,14 +47,24 @@ public class PartidaMultijugador extends JFrame {
 	Socket con;
 	String nombreJugador1;
 	String nombreJugador2;
+	DataInputStream dis;
+	DataOutputStream dos;
 	
 	
+	@SuppressWarnings("deprecation")
 	public PartidaMultijugador(Socket s, String nj1, boolean ladoEmp) {
 		ladoEmperador=ladoEmp;
 		con = s;
-		nombreJugador1 = nj1; 
+		nombreJugador1 = nj1;
+		nombreJugador2="";
+		try{
+		dis = new DataInputStream(con.getInputStream());
+		dos = new DataOutputStream(con.getOutputStream());
+		dos.writeBytes(nombreJugador1+"/r/n");
+		nombreJugador2=dis.readLine();
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\Kaiji\\zawa.png"));
-		setTitle("E-Card Un Jugador");
+		setTitle("E-Card Multijugador");
 		setType(Type.POPUP);
 		setResizable(false);
 		setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -59,9 +72,9 @@ public class PartidaMultijugador extends JFrame {
 		
 		//Dimension para que los botones tengan el tamaño de sus iconos (las cartas)
 		Dimension d = new Dimension(72,96);
-		ImageIcon iconCitizen = new ImageIcon(menu.class.getResource("/res/citizen-scaled.jpg"));
-		ImageIcon iconEmperor = new ImageIcon(menu.class.getResource("/res/emperor-scaled.jpg"));
-		ImageIcon iconSlave = new ImageIcon(menu.class.getResource("/res/slave-scaled.jpg"));
+		ImageIcon iconCitizen = new ImageIcon(Menu.class.getResource("/res/citizen-scaled.jpg"));
+		ImageIcon iconEmperor = new ImageIcon(Menu.class.getResource("/res/emperor-scaled.jpg"));
+		ImageIcon iconSlave = new ImageIcon(Menu.class.getResource("/res/slave-scaled.jpg"));
 
 		FlowLayout fl=new FlowLayout();
 		fl.setVgap(200);
@@ -73,9 +86,17 @@ public class PartidaMultijugador extends JFrame {
 		emperor = new JButton(iconEmperor);
 		emperor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				numeroJugado=1;
+				numeroJugado="1";
+				try {
+					dos.writeBytes(numeroJugado);
+					numeroPasadoPorElRival=dis.readLine();
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				emperor.setVisible(false);
-				AJugar();
+				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
 		});
@@ -84,9 +105,16 @@ public class PartidaMultijugador extends JFrame {
 		citizen1 = new JButton(iconCitizen);
 		citizen1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				numeroJugado=2;
+				numeroJugado="2";
+				try {
+					dos.writeBytes(numeroJugado);
+					numeroPasadoPorElRival=dis.readLine();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				citizen1.setVisible(false);
-				AJugar();
+				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
 		});
@@ -95,9 +123,16 @@ public class PartidaMultijugador extends JFrame {
 		citizen2 = new JButton(iconCitizen);
 		citizen2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				numeroJugado=3;
+				numeroJugado="3";
+				try {
+					dos.writeBytes(numeroJugado);
+					numeroPasadoPorElRival=dis.readLine();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				citizen2.setVisible(false);
-				AJugar();
+				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
 		});
@@ -106,9 +141,16 @@ public class PartidaMultijugador extends JFrame {
 		citizen3 = new JButton(iconCitizen);
 		citizen3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				numeroJugado=4;
+				numeroJugado="4";
+				try {
+					dos.writeBytes(numeroJugado);
+					numeroPasadoPorElRival=dis.readLine();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				citizen3.setVisible(false);
-				AJugar();
+				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
 		});
@@ -117,9 +159,16 @@ public class PartidaMultijugador extends JFrame {
 		citizen4 = new JButton(iconCitizen);
 		citizen4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				numeroJugado=5;
+				numeroJugado="5";
+				try {
+					dos.writeBytes(numeroJugado);
+					numeroPasadoPorElRival=dis.readLine();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				citizen4.setVisible(false);
-				AJugar();
+				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
 		});
@@ -134,9 +183,16 @@ public class PartidaMultijugador extends JFrame {
 		slave = new JButton(iconSlave);
 		slave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				numeroJugado=10;
+				numeroJugado="10";
+				try {
+					dos.writeBytes(numeroJugado);
+					numeroPasadoPorElRival=dis.readLine();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				slave.setVisible(false);
-				AJugar();
+				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
 		});
@@ -146,9 +202,16 @@ public class PartidaMultijugador extends JFrame {
 		citizen11 = new JButton(iconCitizen);
 		citizen11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				numeroJugado=6;
+				numeroJugado="6";
+				try {
+					dos.writeBytes(numeroJugado);
+					numeroPasadoPorElRival=dis.readLine();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				citizen11.setVisible(false);
-				AJugar();
+				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
 		});
@@ -158,9 +221,16 @@ public class PartidaMultijugador extends JFrame {
 		citizen22 = new JButton(iconCitizen);
 		citizen22.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				numeroJugado=7;
+				numeroJugado="7";
+				try {
+					dos.writeBytes(numeroJugado);
+					numeroPasadoPorElRival=dis.readLine();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				citizen22.setVisible(false);
-				AJugar();
+				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
 		});
@@ -170,9 +240,16 @@ public class PartidaMultijugador extends JFrame {
 		citizen33 = new JButton(iconCitizen);
 		citizen33.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				numeroJugado=8;
+				numeroJugado="8";
+				try {
+					dos.writeBytes(numeroJugado);
+					numeroPasadoPorElRival=dis.readLine();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				citizen33.setVisible(false);
-				AJugar();
+				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
 		});
@@ -182,9 +259,16 @@ public class PartidaMultijugador extends JFrame {
 		citizen44 = new JButton(iconCitizen);
 		citizen44.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				numeroJugado=9;
+				numeroJugado="9";
+				try {
+					dos.writeBytes(numeroJugado);
+					numeroPasadoPorElRival=dis.readLine();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				citizen44.setVisible(false);
-				AJugar();
+				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
 		});
@@ -195,20 +279,20 @@ public class PartidaMultijugador extends JFrame {
 		panelDerecha = new JPanel();
 		panelDerecha.setOpaque(false);
 		getContentPane().add(panelDerecha,BorderLayout.EAST);
-		JLabel CPU=new JLabel("CPU");
-		panelDerecha.add(CPU);
+		JLabel Jugador2=new JLabel(nombreJugador2);
+		panelDerecha.add(Jugador2);
 		
 		panelIzquierda = new JPanel();
 		panelIzquierda.setOpaque(false);
 		getContentPane().add(panelIzquierda,BorderLayout.WEST);
-		JLabel Jugador=new JLabel("JUGADOR");
+		JLabel Jugador=new JLabel(nombreJugador1);
 		panelIzquierda.add(Jugador);
 		
 		panelCentro = new JPanel();
 		panelCentro.setOpaque(false);
 		getContentPane().add(panelCentro,BorderLayout.CENTER);
 		
-		resultado=new JLabel(espaciosBlanco+contadorJugador+"-"+contadorCPU);
+		resultado=new JLabel(espaciosBlanco+contadorJugador+"-"+contadorRival);
 		panelIzquierda.add(resultado);
 		
 		if(ladoEmperador) {
@@ -220,63 +304,75 @@ public class PartidaMultijugador extends JFrame {
 		
 		//Encajona las piezas del JFrame
 		pack();
-		
+
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	} 
+//		finally {
+//
+//		try {
+//			if (s != null) {
+//				s.close();
+//			}
+//
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//	}
 		
 	}
 	
 	
-	public static void AJugar() {
-		int numeroJugadoCPU = 0;
-		// La CPU eligira un numero según el lado en el que se encuentre
-		if (ladoEmperador) {
-			numeroJugadoCPU = cartaJugadaladoEsclavoCPU();
-		} else {
-			numeroJugadoCPU = cartaJugadaladoEmperadorCPU();
-		}
+	public static void AJugar(String numeroJugadorvl) {
+		int numeroJugadoRival = Integer.parseInt(numeroJugadorvl);
+		int numeroJugadoYo = Integer.parseInt(numeroJugado);
 		// se juega la partida de un lado
 		if (ladoEmperador) {
 			// Si uso emperador ---> o pierdo contra esclavo (10) o gano contra ciudadano
 			// (6-9)
-			if (numeroJugado == 1) {
-				if (numeroJugadoCPU == 10) {
-					contadorCPU = contadorCPU + 3;
+			if (numeroJugadoYo == 1) {
+				if (numeroJugadoRival == 10) {
+					contadorRival = contadorRival + 5;
 				} else {
 					contadorJugador++;
 				}
 
 				// Si uso ciudadano ---> o gano al esclavo (10) o empato al ciudadano (6-9)
 			} else {
-				if (numeroJugadoCPU == 10) {
+				if (numeroJugadoRival == 10) {
 					contadorJugador++;
 				} else {
 					seguimos = true;
-				}
+				} 
 			}
 
 		} else {
 			// Si uso esclavo ---> o gano al emperador (1) o pierdo contra el ciudadano
 			// (2-5)
-			if (numeroJugado == 10) {
-				if (numeroJugadoCPU == 1) {
+			if (numeroJugadoYo == 10) {
+				if (numeroJugadoRival == 1) {
 					contadorJugador = contadorJugador + 3;
 				} else {
-					contadorCPU++;
+					contadorRival++;
 				}
 				// Si uso ciudadano ---> o pierdo contra el emperador (1) o empato al ciudadano
 				// (2-5)
 			} else {
-				if (numeroJugadoCPU == 1) {
-					contadorCPU++;
+				if (numeroJugadoRival == 1) {
+					contadorRival++;
 				} else {
 					seguimos = true;
 				}
 			}
 		}
-
+		System.out.println("Numero jugado del rival" + numeroJugadoRival);
 		// Actualizamos el resultado
-		resultado.setText(espaciosBlanco + contadorJugador + "-" + contadorCPU);
-		// Quitamos el boton que ha usado la maquina
-		botonUsado(numeroJugadoCPU).setVisible(false);			
+		resultado.setText(espaciosBlanco + contadorJugador + "-" + contadorRival);
+		// Quitamos el boton que ha usado el rival
+		botonUsado(numeroJugadoRival).setVisible(false);			
 	}
 	
 	public static void estadoPartida() {
@@ -302,14 +398,14 @@ public class PartidaMultijugador extends JFrame {
 			turno=0;
 		}
 		if (ronda == 4) {
-			if (contadorJugador > contadorCPU) {
+			if (contadorJugador > contadorRival) {
 				JOptionPane.showMessageDialog(null, "Resultado: " + resultado.getText().replaceAll("\s+","") + " - Ganaste, menos mal...");
 				
 			} else {
 				JOptionPane.showMessageDialog(null, "Resultado: " + resultado.getText().replaceAll("\s+","") + " - No has ganado a la CPU, que basura!");
 			}
-			contadorJugador=0;contadorCPU=0;
-			resultado.setText(espaciosBlanco + contadorJugador + "-" + contadorCPU);
+			contadorJugador=0;contadorRival=0;
+			resultado.setText(espaciosBlanco + contadorJugador + "-" + contadorRival);
 			ronda = 0;
 		}
 		seguimos=false;

@@ -51,9 +51,9 @@ public class PartidaUnJugador extends JFrame {
 		
 		//Dimension para que los botones tengan el tamaño de sus iconos (las cartas)
 		Dimension d = new Dimension(72,96);
-		ImageIcon iconCitizen = new ImageIcon(menu.class.getResource("/res/citizen-scaled.jpg"));
-		ImageIcon iconEmperor = new ImageIcon(menu.class.getResource("/res/emperor-scaled.jpg"));
-		ImageIcon iconSlave = new ImageIcon(menu.class.getResource("/res/slave-scaled.jpg"));
+		ImageIcon iconCitizen = new ImageIcon(Menu.class.getResource("/res/citizen-scaled.jpg"));
+		ImageIcon iconEmperor = new ImageIcon(Menu.class.getResource("/res/emperor-scaled.jpg"));
+		ImageIcon iconSlave = new ImageIcon(Menu.class.getResource("/res/slave-scaled.jpg"));
 
 		FlowLayout fl=new FlowLayout();
 		fl.setVgap(200);
@@ -231,7 +231,7 @@ public class PartidaUnJugador extends JFrame {
 			// (6-9)
 			if (numeroJugado == 1) {
 				if (numeroJugadoCPU == 10) {
-					contadorCPU = contadorCPU + 3;
+					contadorCPU = contadorCPU + 5;
 				} else {
 					contadorJugador++;
 				}
