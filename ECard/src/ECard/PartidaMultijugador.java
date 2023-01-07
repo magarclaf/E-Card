@@ -1,19 +1,14 @@
 package ECard;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.Socket;
-import java.net.URL;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.Window.Type;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 
 public class PartidaMultijugador extends JFrame {
@@ -369,12 +364,31 @@ public class PartidaMultijugador extends JFrame {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
 	} 
-		
+		this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                try {
+                    dos.writeBytes("Desconexión\r\n");
+                    dos.flush();
+                    dispose();
+                    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                } finally {
+                    try {
+                        dos.close();
+                        dis.close();
+                        s.close();
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
+
+                }
+            }
+        });
 	}
 	
 	
 	public static void AJugar(String numeroJugadorvl) {
-		JOptionPane.showMessageDialog(null,"El número recibido es: " + numeroPasadoPorElRival);
 		int numeroJugadoRival = Integer.parseInt(numeroJugadorvl);
 		int numeroJugadoYo = Integer.parseInt(numeroJugado);
 		// se juega la partida de un lado
@@ -447,10 +461,12 @@ public class PartidaMultijugador extends JFrame {
 		}
 		if (ronda == 4) {
 			if (contadorJugador > contadorRival) {
-				JOptionPane.showMessageDialog(null, "Resultado: " + resultado.getText().replaceAll("\s+","") + " - Ganaste, menos mal...");
+				JOptionPane.showMessageDialog(null, "Resultado: " + resultado.getText().replaceAll("\s+","") + " - " + nombreJugador1 + " ha ganado la partida.");
 				
+			} else if (contadorJugador < contadorRival){
+				JOptionPane.showMessageDialog(null, "Resultado: " + resultado.getText().replaceAll("\s+","") + " - " + nombreJugador2 + " ha ganado la partida.");
 			} else {
-				JOptionPane.showMessageDialog(null, "Resultado: " + resultado.getText().replaceAll("\s+","") + " - No has ganado a la CPU, que basura!");
+				JOptionPane.showMessageDialog(null, "Resultado: " + resultado.getText().replaceAll("\s+","") + " - " + nombreJugador1 + " y " + nombreJugador2 + " han empatado.");
 			}
 			contadorJugador=0;contadorRival=0;
 			resultado.setText(espaciosBlanco + contadorJugador + "-" + contadorRival);
@@ -511,8 +527,6 @@ public class PartidaMultijugador extends JFrame {
 		}
 		else
 		    return jugada+6;
-		
-		//return (int)(Math.random()*(10-6+1)+6);
 	}
 	
 	public static int cartaJugadaladoEmperadorCPU() {
@@ -522,8 +536,6 @@ public class PartidaMultijugador extends JFrame {
 		}
 		else
 		    return jugada+2;
-		
-		//return (int)(Math.random()*(5-1+1)+1);
 	}
 	
 	
@@ -561,5 +573,5 @@ public class PartidaMultijugador extends JFrame {
 		}
 		return null;
 	}
-
+	
 }

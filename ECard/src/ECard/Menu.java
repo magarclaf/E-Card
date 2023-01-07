@@ -8,17 +8,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Color;
@@ -28,7 +21,6 @@ import java.awt.Font;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.JFormattedTextField;
 import javax.swing.JScrollPane;
 
 public class Menu extends JFrame {
@@ -46,6 +38,7 @@ public class Menu extends JFrame {
 	
 	private String nombre;
 	private JTextField textIP;
+	private Thread serv;
 
 	/**
 	 * Launch the application.
@@ -101,23 +94,16 @@ public class Menu extends JFrame {
 		btnCrear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switchPanels(panelEspera);
-				try(ServerSocket server = new ServerSocket(7777)){
-//					Boolean c = false;
-//					while(!c) {
-//						try{
-								Socket s = server.accept();
-								//c=true;
-								PartidaMultijugador pmj = new PartidaMultijugador(s,nombre,true);
-								pmj.setVisible(true);
-								pmj.toFront();
-								dispose();
-//						}catch (IOException e1) {
-//							e1.printStackTrace();
-//						}
-//					}
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				}
+				serv = new Thread(new Runnable() {public void run() {try(ServerSocket server = new ServerSocket(7777)){
+					Socket s = server.accept();
+					PartidaMultijugador pmj = new PartidaMultijugador(s,nombre,true);
+					pmj.setVisible(true);
+					pmj.toFront();
+					dispose();
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}}});
+				serv.start();
 			}
 		});
 		btnCrear.setFont(new Font("Tahoma", Font.BOLD, 25));
@@ -169,7 +155,7 @@ public class Menu extends JFrame {
 				} catch (UnknownHostException e1) {
 					JOptionPane.showMessageDialog(null,"Conexión no válida");
 				} catch (IOException e2) {
-					e2.printStackTrace();
+					JOptionPane.showMessageDialog(null,"Esta ip no está corriendo el juego");
 				}
 			}
 		});
@@ -203,6 +189,7 @@ public class Menu extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switchPanels(panelMenu);
+				serv.stop();
 			}
 		});
 		btnVolver.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -342,7 +329,7 @@ public class Menu extends JFrame {
 		JTextPane txtReglas = new JTextPane();
 		scrollPane.setViewportView(txtReglas);
 		txtReglas.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		//txtpnAquIrnLas.setText("\tAquí irán las reglas del juego\r\n\tbla bla bla bla bla\r\n\t\r\nAPARTADO 1:\r\n\tReglas iniciales\r\n\tMás reglas\r\n\t\r\nAPARTADO 2:\r\n\tXDXDXDXDXDXDXDDDDDDDDDDDDDDDDDDDDDDDDD\r\n\t\r\nAPARTADO 3:\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN\r\n\tNEVER GONNA GIVE YOU UP\r\n\tNEVER GONNA LET YOU DOWN");
+		//REGLAS DEL JUEGO:
 		txtReglas.setText("Juego de cartas para dos jugadores.\r\n\t\r\n\nTIPOS DE CARTAS:\r\n\n3 tipos de cartas: Emperador, Ciudadano y Esclavo.\r\n\t\n"
 				+ "El Emperador esta en lo mas alto de la sociedad por lo que derrotará a los Ciudadanos, pero perderá contra el Esclavo.\r\n\t\n"
 				+ "Los Ciudadanos necesitan el dinero del Emperador por lo que perderán contra él, pero derrotarán al Esclavo, el cual se sitúa en lo más bajo de la sociedad.\r\n\t\n"

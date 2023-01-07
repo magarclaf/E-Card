@@ -1,15 +1,7 @@
 package ECard;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.Window.Type;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -205,8 +197,6 @@ public class PartidaUnJugador extends JFrame {
 		
 		//Encajona las piezas del JFrame
 		pack();
-		
-		//AJugar();
 	}
 	
 	//main que invoca al constructor y lo muestra
