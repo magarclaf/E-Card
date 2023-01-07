@@ -8,9 +8,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.Window.Type;
 import java.awt.event.ActionListener;
@@ -44,63 +41,19 @@ public class PartidaUnJugador extends JFrame {
 	private static boolean ladoEmperador=true;
 	private static boolean seguimos=false;
 	
-	
 	public PartidaUnJugador() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\Kaiji\\zawa.png"));
 		setTitle("E-Card Un Jugador");
 		setType(Type.POPUP);
 		setResizable(false);
 		setExtendedState(Frame.MAXIMIZED_BOTH);
-		
-//		this.lado=lado;
-		
-//		URL urlC;
-//		URL urlE;
-//		URL urlS;
-//		ImageIcon iconCitizen = null;
-//		ImageIcon iconSlave = null;
-//		ImageIcon iconEmperor = null;
-//		try{
-//			urlC = new URL("https://github.com/magarclaf/E-Card/blob/master/citizen-scaled.jpg");
-//			BufferedImage imgC = ImageIO.read(urlC);
-//			urlE = new URL("https://github.com/magarclaf/E-Card/blob/master/emperor-scaled.jpg");
-//			BufferedImage imgE = ImageIO.read(urlE);
-//			urlS = new URL("https://github.com/magarclaf/E-Card/blob/master/slave-scaled.jpg");
-//			BufferedImage imgS = ImageIO.read(urlS);
-//			
-//			iconCitizen = new ImageIcon(imgC);
-//			iconEmperor = new ImageIcon(imgE);
-//			iconSlave = new ImageIcon(imgS);
-//			
-//		} catch (MalformedURLException e) {			
-//			e.printStackTrace();
-//		}	
-//		 catch (IOException e) {
-//			e.printStackTrace();
-//		}
-		
-		//Codigo para poner el background a la ventana
-//		BufferedImage img = null;
-//		try {
-//		    img = ImageIO.read(new File("D:\\Desktop\\Weeb\\fondos\\las-quintillizas.jpg"));
-//		} catch (IOException e) {
-//		    e.printStackTrace();
-//		}
-//		Image dimg = img.getScaledInstance(800, 508, Image.SCALE_DEFAULT);
-//		ImageIcon imageIcon = new ImageIcon(dimg);
-//		JLabel fondo=new JLabel(imageIcon);
-//		setContentPane(fondo);
-		
-		
-		 
-		
-		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//Dimension para que los botones tengan el tamaño de sus iconos (las cartas)
 		Dimension d = new Dimension(72,96);
-		ImageIcon iconCitizen = new ImageIcon("D:\\Users\\mgarc\\git\\E-Card\\citizen-scaled.jpg");
-		ImageIcon iconEmperor = new ImageIcon("D:\\Users\\mgarc\\git\\E-Card\\emperor-scaled.jpg");
-		ImageIcon iconSlave = new ImageIcon("D:\\Users\\mgarc\\git\\E-Card\\slave-scaled.jpg");
+		ImageIcon iconCitizen = new ImageIcon(menu.class.getResource("/res/citizen-scaled.jpg"));
+		ImageIcon iconEmperor = new ImageIcon(menu.class.getResource("/res/emperor-scaled.jpg"));
+		ImageIcon iconSlave = new ImageIcon(menu.class.getResource("/res/slave-scaled.jpg"));
 
 		FlowLayout fl=new FlowLayout();
 		fl.setVgap(200);
@@ -262,18 +215,6 @@ public class PartidaUnJugador extends JFrame {
 		e.setVisible(true);
 		
 	}
-	//Sonido al pulsar botones , usado en estadoPartida (3ª linea)
-	public static void playSound(String soundName) {
-		try {
-			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
-			Clip clip = AudioSystem.getClip();
-			clip.open(audioInputStream);
-			clip.start();
-		} catch (Exception ex) {
-			System.out.println("Error with playing sound.");
-			ex.printStackTrace();
-		}
-	}
 	
 	
 	public static void AJugar() {
@@ -333,7 +274,6 @@ public class PartidaUnJugador extends JFrame {
 	public static void estadoPartida() {
 		jugada++;
 		if(!seguimos) {
-			playSound("D:\\Users\\mgarc\\git\\E-Card\\zawazawa.wav");
 			if (ladoEmperador) {
 				visibilidadLadoEmperador();
 			} else {
@@ -469,103 +409,5 @@ public class PartidaUnJugador extends JFrame {
 		}
 		return null;
 	}
-	
-//	public static void AJugar() {
-//		int ronda = 0;
-//		int turno = 0;
-//		int jugada = 0;
-//		int numeroJugadoCPU = 0;
-//		boolean ladoEmperador = true;
-//		boolean seguimos = false;
-//		
-//		// 4 rondas distintos
-//		while (ronda < 4) {
-//			if(botonPulsado) {
-//			// 3 turnos seguidas en el mismo lado
-//			while (turno < 3) {
-//				if (botonPulsado) {
-//				while (seguimos && jugada < 5) {
-//					if (botonPulsado) {
-//						// La CPU eligira un numero según el lado en el que se encuentre
-//						if (ladoEmperador) {
-//							numeroJugadoCPU = cartaJugadaladoEsclavoCPU(turno);
-//						} else {
-//							numeroJugadoCPU = cartaJugadaladoEmperadorCPU(turno);
-//						}
-//
-//						// se juega la partida de un lado
-//						if (ladoEmperador) {
-//							// Si uso emperador ---> o pierdo contra esclavo (10) o gano contra ciudadano
-//							// (6-9)
-//							if (numeroJugado == 1) {
-//								if (numeroJugadoCPU == 10) {
-//									contadorCPU = contadorCPU + 3;
-//								} else {
-//									contadorJugador++;
-//								}
-//
-//								// Si uso ciudadano ---> o gano al esclavo (10) o empato al ciudadano (6-9)
-//							} else {
-//								if (numeroJugadoCPU == 10) {
-//									contadorJugador++;
-//								} else {
-//									seguimos = true;
-//								}
-//							}
-//
-//						} else {
-//							// Si uso esclavo ---> o gano al emperador (1) o pierdo contra el ciudadano
-//							// (2-5)
-//							if (numeroJugado == 10) {
-//								if (numeroJugadoCPU == 1) {
-//									contadorJugador = contadorJugador + 3;
-//								} else {
-//									contadorCPU++;
-//								}
-//								// Si uso ciudadano ---> o pierdo contra el emperador (1) o empato al ciudadano
-//								// (2-5)
-//							} else {
-//								if (numeroJugadoCPU == 1) {
-//									contadorCPU++;
-//								} else {
-//									seguimos = true;
-//								}
-//							}
-//						}
-//						botonPulsado = false;
-//					}
-//					// Actualizamos el resultado
-//					resultado.setText(espaciosBlanco + contadorJugador + "-" + contadorCPU);
-//					// Quitamos el boton que ha usado la maquina
-//					botonUsado(numeroJugadoCPU).setVisible(false);
-//					// si seguimos no avanzamos de ronda, si ya tenemos resultado volvemos las cosas
-//					// como estaban y empezamos nueva ronda
-//				}
-//				if (seguimos) {
-//					seguimos = false;
-//				} else {
-//					if (ladoEmperador) {
-//						visibilidadLadoEmperador();
-//					} else {
-//						visibilidadLadoEsclavo();
-//					}
-//					turno++;
-//				}
-//				}
-//
-//			}
-//			// al terminar las 3 rondas del turno correspondiente cambiamos de lado dandole
-//			// la visibilidad correspondiente
-//			if (ladoEmperador) {
-//				ladoEmperador = false;
-//				visibilidadLadoEsclavo();
-//			} else {
-//				ladoEmperador = true;
-//				visibilidadLadoEmperador();
-//			}
-//			ronda++;
-//			}
-//		}
-//	}
 
 }
