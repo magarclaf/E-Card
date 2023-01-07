@@ -87,6 +87,7 @@ public class PartidaMultijugador extends JFrame {
 		emperor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado="1";
+				emperor.setVisible(false);
 				try {
 					dos.writeBytes(numeroJugado);
 					numeroPasadoPorElRival=dis.readLine();
@@ -95,7 +96,7 @@ public class PartidaMultijugador extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				emperor.setVisible(false);
+				
 				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
@@ -106,6 +107,7 @@ public class PartidaMultijugador extends JFrame {
 		citizen1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado="2";
+				citizen1.setVisible(false);
 				try {
 					dos.writeBytes(numeroJugado);
 					numeroPasadoPorElRival=dis.readLine();
@@ -113,7 +115,7 @@ public class PartidaMultijugador extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				citizen1.setVisible(false);
+				
 				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
@@ -124,6 +126,7 @@ public class PartidaMultijugador extends JFrame {
 		citizen2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado="3";
+				citizen2.setVisible(false);
 				try {
 					dos.writeBytes(numeroJugado);
 					numeroPasadoPorElRival=dis.readLine();
@@ -131,7 +134,7 @@ public class PartidaMultijugador extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				citizen2.setVisible(false);
+				
 				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
@@ -142,6 +145,7 @@ public class PartidaMultijugador extends JFrame {
 		citizen3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado="4";
+				citizen3.setVisible(false);
 				try {
 					dos.writeBytes(numeroJugado);
 					numeroPasadoPorElRival=dis.readLine();
@@ -149,7 +153,7 @@ public class PartidaMultijugador extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				citizen3.setVisible(false);
+				
 				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
@@ -160,6 +164,7 @@ public class PartidaMultijugador extends JFrame {
 		citizen4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado="5";
+				citizen4.setVisible(false);
 				try {
 					dos.writeBytes(numeroJugado);
 					numeroPasadoPorElRival=dis.readLine();
@@ -167,7 +172,7 @@ public class PartidaMultijugador extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				citizen4.setVisible(false);
+				
 				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
@@ -184,6 +189,7 @@ public class PartidaMultijugador extends JFrame {
 		slave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado="10";
+				slave.setVisible(false);
 				try {
 					dos.writeBytes(numeroJugado);
 					numeroPasadoPorElRival=dis.readLine();
@@ -191,7 +197,7 @@ public class PartidaMultijugador extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				slave.setVisible(false);
+				
 				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
@@ -203,6 +209,7 @@ public class PartidaMultijugador extends JFrame {
 		citizen11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado="6";
+				citizen11.setVisible(false);
 				try {
 					dos.writeBytes(numeroJugado);
 					numeroPasadoPorElRival=dis.readLine();
@@ -210,7 +217,7 @@ public class PartidaMultijugador extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				citizen11.setVisible(false);
+				
 				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
@@ -222,6 +229,7 @@ public class PartidaMultijugador extends JFrame {
 		citizen22.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado="7";
+				citizen22.setVisible(false);
 				try {
 					dos.writeBytes(numeroJugado);
 					numeroPasadoPorElRival=dis.readLine();
@@ -229,7 +237,7 @@ public class PartidaMultijugador extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				citizen22.setVisible(false);
+				
 				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
@@ -241,6 +249,7 @@ public class PartidaMultijugador extends JFrame {
 		citizen33.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado="8";
+				citizen33.setVisible(false);
 				try {
 					dos.writeBytes(numeroJugado);
 					numeroPasadoPorElRival=dis.readLine();
@@ -248,7 +257,7 @@ public class PartidaMultijugador extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				citizen33.setVisible(false);
+				
 				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
@@ -260,6 +269,7 @@ public class PartidaMultijugador extends JFrame {
 		citizen44.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numeroJugado="9";
+				citizen44.setVisible(false);
 				try {
 					dos.writeBytes(numeroJugado);
 					numeroPasadoPorElRival=dis.readLine();
@@ -267,7 +277,7 @@ public class PartidaMultijugador extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				citizen44.setVisible(false);
+				
 				AJugar(numeroPasadoPorElRival);
 				estadoPartida();
 			}
