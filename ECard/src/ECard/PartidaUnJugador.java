@@ -34,7 +34,6 @@ public class PartidaUnJugador extends JFrame {
 	private static boolean seguimos=false;
 	
 	public PartidaUnJugador() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\Kaiji\\zawa.png"));
 		setTitle("E-Card Un Jugador");
 		setType(Type.POPUP);
 		setResizable(false);

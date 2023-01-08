@@ -3,6 +3,8 @@ package ECard;
 import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import javax.swing.*;
@@ -60,7 +62,6 @@ public class PartidaMultijugador extends JFrame {
 		dos.flush();
 		nombreJugador2=dis.readLine();		
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Desktop\\Kaiji\\zawa.png"));
 		setTitle("E-Card Multijugador");
 		setType(Type.POPUP);
 		setResizable(false);
@@ -430,7 +431,6 @@ public class PartidaMultijugador extends JFrame {
 				}
 			}
 		}
-		System.out.println("Numero jugado del rival" + numeroJugadoRival);
 		// Actualizamos el resultado
 		resultado.setText(espaciosBlanco + contadorJugador + "-" + contadorRival);
 		// Quitamos el boton que ha usado el rival
@@ -460,17 +460,31 @@ public class PartidaMultijugador extends JFrame {
 			turno=0;
 		}
 		if (ronda == 4) {
-			if (contadorJugador > contadorRival) {
-				JOptionPane.showMessageDialog(null, "Resultado: " + resultado.getText().replaceAll("\s+","") + " - " + nombreJugador1 + " ha ganado la partida.");
+			try(DataOutputStream dos = new DataOutputStream(new FileOutputStream("src/res/historial.txt",true))){
+				String result;				
+				if (contadorJugador > contadorRival) {
+					result = "Resultado: " + resultado.getText().replaceAll("\s+","") + " - " + nombreJugador1 + " has ganado contra " + nombreJugador2;
+					JOptionPane.showMessageDialog(null, result);
+					
+				} else if (contadorJugador < contadorRival){
+					result = "Resultado: " + resultado.getText().replaceAll("\s+","") + " - " + nombreJugador1 + " has perdido contra " + nombreJugador2;
+					JOptionPane.showMessageDialog(null, result);
+				} else {
+					result = "Resultado: " + resultado.getText().replaceAll("\s+","") + " - " + nombreJugador1 + " y " + nombreJugador2 + " han empatado.";
+					JOptionPane.showMessageDialog(null, result);
+				}
+				dos.writeBytes(result+"\r\n");
+				contadorJugador=0;contadorRival=0;
+				resultado.setText(espaciosBlanco + contadorJugador + "-" + contadorRival);
+				ronda = 0;
 				
-			} else if (contadorJugador < contadorRival){
-				JOptionPane.showMessageDialog(null, "Resultado: " + resultado.getText().replaceAll("\s+","") + " - " + nombreJugador2 + " ha ganado la partida.");
-			} else {
-				JOptionPane.showMessageDialog(null, "Resultado: " + resultado.getText().replaceAll("\s+","") + " - " + nombreJugador1 + " y " + nombreJugador2 + " han empatado.");
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			contadorJugador=0;contadorRival=0;
-			resultado.setText(espaciosBlanco + contadorJugador + "-" + contadorRival);
-			ronda = 0;
 		}
 		seguimos=false;
 	}

@@ -8,6 +8,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,6 +25,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class Menu extends JFrame {
 
@@ -33,8 +37,10 @@ public class Menu extends JFrame {
 	private JPanel hostcliente;
 	private JPanel panelEspera;
 	private JPanel panelConexion;
+	private JPanel panelHistorial;
 	
 	private JLabel lbWelcome;
+	private JTextPane textPaneHist;
 	
 	private String nombre;
 	private JTextField textIP;
@@ -83,6 +89,55 @@ public class Menu extends JFrame {
 		layeredPanel.setBounds(0, 0, 652, 593);
 		contentPane.add(layeredPanel);
 		layeredPanel.setLayout(null);
+		
+		panelIntro = new JPanel();
+		panelIntro.setBackground(new Color(245, 222, 179));
+		panelIntro.setBounds(0, 0, 652, 593);
+		layeredPanel.add(panelIntro);
+		panelIntro.setLayout(null);
+		
+		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar.setBounds(279, 514, 89, 23);
+		panelIntro.add(btnAceptar);
+		btnAceptar.setForeground(new Color(0, 0, 0));
+		btnAceptar.setBackground(new Color(255, 165, 0));
+		
+		JLabel lblIntroduceNombre = new JLabel("Introduce tu nombre");
+		lblIntroduceNombre.setBounds(243, 449, 164, 23);
+		panelIntro.add(lblIntroduceNombre);
+		lblIntroduceNombre.setBackground(new Color(255, 255, 255));
+		lblIntroduceNombre.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		
+		JLabel lblTitulo = new JLabel("E-CARD");
+		lblTitulo.setBounds(191, 372, 267, 52);
+		panelIntro.add(lblTitulo);
+		lblTitulo.setForeground(Color.BLACK);
+		lblTitulo.setBackground(Color.WHITE);
+		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 38));
+		
+		JLabel lblEmperadorInicio = new JLabel("");
+		lblEmperadorInicio.setBounds(123, 25, 400, 336);
+		panelIntro.add(lblEmperadorInicio);
+		lblEmperadorInicio.setVerticalAlignment(SwingConstants.TOP);
+		lblEmperadorInicio.setIcon(new ImageIcon(Menu.class.getResource("/res/emperor.jpg")));
+		
+		JTextPane textNombre = new JTextPane();
+		textNombre.setBounds(243, 480, 164, 23);
+		panelIntro.add(textNombre);
+		textNombre.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textNombre.setBackground(new Color(230, 230, 250));
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textNombre.getText()!=null) {
+					nombre = textNombre.getText();
+				}
+				lbWelcome.setText("Bienvenido " + nombre);
+				switchPanels(panelMenu);
+			}
+		});
+		
+		switchPanels(panelIntro);
 		
 		hostcliente = new JPanel();
 		hostcliente.setBackground(new Color(255, 228, 181));
@@ -196,6 +251,79 @@ public class Menu extends JFrame {
 		btnVolver.setBounds(437, 522, 151, 31);
 		panelEspera.add(btnVolver);
 		
+		panelReglas = new JPanel();
+		panelReglas.setBackground(new Color(255, 250, 205));
+		panelReglas.setBounds(0, 0, 652, 593);
+		layeredPanel.add(panelReglas);
+		panelReglas.setLayout(null);
+		
+		JLabel lblPantallaReglas = new JLabel("REGLAS E-CARD");
+		lblPantallaReglas.setFont(new Font("Tahoma", Font.BOLD, 32));
+		lblPantallaReglas.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPantallaReglas.setBounds(162, 22, 335, 57);
+		panelReglas.add(lblPantallaReglas);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 83, 632, 458);
+		panelReglas.add(scrollPane);
+		
+		JTextPane txtReglas = new JTextPane();
+		scrollPane.setViewportView(txtReglas);
+		txtReglas.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		//REGLAS DEL JUEGO:
+		txtReglas.setText("Juego de cartas para dos jugadores.\r\n\t\r\n\nTIPOS DE CARTAS:\r\n\n3 tipos de cartas: Emperador, Ciudadano y Esclavo.\r\n\t\n"
+				+ "El Emperador esta en lo mas alto de la sociedad por lo que derrotará a los Ciudadanos, pero perderá contra el Esclavo.\r\n\t\n"
+				+ "Los Ciudadanos necesitan el dinero del Emperador por lo que perderán contra él, pero derrotarán al Esclavo, el cual se sitúa en lo más bajo de la sociedad.\r\n\t\n"
+				+ "El Esclavo perderá contra los Ciudadanos, pero ganará al Emperador puesto que el Esclavo no tiene acceso a dinero y no tiene nada que perder.\r\n\n\nMAZOS Y RONDAS:\r\n\t\n"
+				+ "Dos mazos: Lado Emperador (1 Emperador + 4 Ciudadanos) y Lado Esclavo (1 Esclavo + 4 Ciudadanos).\r\n\t\n"
+				+ "Como es mucho más dificil ganar en el Lado Esclavo, la victoria valdrá 5 veces más.\r\n\t\n"
+				+ "Los lados no son fijos, se irán rotando a lo largo de la partida.\r\n\t\n"
+				+ "En la partida, cada jugador jugara 2 veces en el Lado Emperador y otras 2 en el Lado Esclavo (4 turnos).\r\n\t\n"
+				+ "Se hacen 3 rondas en cada lado y se cambia al otro así hasta terminar (12 rondas en total).\r\n\t\r\n\t\r\n"
+				+ "\nPOSIBLES JUGADAS:\r\n\nEn cada jugada, se pondra un carta de tu mazo mientras tu rival pondra otra del suyo, una carta determinada se puede usar una única vez por ronda.\r\n\t\n"
+				+ "Se realizaran los enfretamientos de las cartas puestas y se distribuiran los puntos de la siguiente manera:\r\n\t\n"
+				+ "Emperador vs Ciudadano: +1 para el jugador en el Lado Emperador.\r\n\t\n"
+				+ "Emperador vs Esclavo: +5 para el jugador en el Lado Esclavo.\r\n\t\n"
+				+ "Esclavo vs Ciudadano: +1 para el jugador en el Lado Emperador.\r\n\t\n"
+				+ "Ciudadano vs Ciudadano: Continua la partida hasta que se de una de las tres jugadas de arriba y se eliminan los ciudadanos usados de ambos mazos (+0).\r\n\t");
+
+		JButton btnMenuPrincipal = new JButton("Menú principal");
+		btnMenuPrincipal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				switchPanels(panelMenu);
+			}
+		});
+		btnMenuPrincipal.setBounds(487, 559, 134, 23);
+		panelReglas.add(btnMenuPrincipal);
+		
+		panelHistorial = new JPanel();
+		panelHistorial.setBackground(new Color(238, 232, 170));
+		panelHistorial.setBounds(0, 0, 652, 593);
+		layeredPanel.add(panelHistorial);
+		panelHistorial.setLayout(null);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(33, 33, 595, 482);
+		panelHistorial.add(scrollPane_1);
+		
+		textPaneHist = new JTextPane();
+		scrollPane_1.setViewportView(textPaneHist);
+		
+		JButton btnNewButton = new JButton("Volver");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				switchPanels(panelMenu);
+			}
+		});
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnNewButton.setBounds(508, 536, 120, 28);
+		panelHistorial.add(btnNewButton);
+		
+		JLabel lblNewLabel = new JLabel("Historial de partidas multijugador");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
+		lblNewLabel.setBounds(43, 536, 455, 28);
+		panelHistorial.add(lblNewLabel);
+		
 		panelMenu = new JPanel();
 		panelMenu.setBackground(new Color(238, 232, 170));
 		panelMenu.setBounds(0, 0, 652, 593);
@@ -244,6 +372,26 @@ public class Menu extends JFrame {
 		panelMenu.add(btReglas);
 		
 		JButton btHistorial = new JButton("Historial");
+		btHistorial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				switchPanels(panelHistorial);
+				try(DataInputStream dis = new DataInputStream( new FileInputStream("src/res/historial.txt"))){
+					String linea = dis.readLine();
+					String hist = "";
+					while(linea != null) {
+						hist = hist + linea + "\r\n";
+						linea=dis.readLine();
+					}
+					textPaneHist.setText(hist);
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btHistorial.setBounds(220, 392, 200, 40);
 		btHistorial.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		panelMenu.add(btHistorial);
@@ -262,99 +410,5 @@ public class Menu extends JFrame {
 		lbWelcome.setBounds(220, 110, 196, 28);
 		lbWelcome.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		panelMenu.add(lbWelcome);
-		
-		panelIntro = new JPanel();
-		panelIntro.setBackground(new Color(245, 222, 179));
-		panelIntro.setBounds(0, 0, 652, 593);
-		layeredPanel.add(panelIntro);
-		panelIntro.setLayout(null);
-		
-		JButton btnAceptar = new JButton("Aceptar");
-		btnAceptar.setBounds(279, 514, 89, 23);
-		panelIntro.add(btnAceptar);
-		btnAceptar.setForeground(new Color(0, 0, 0));
-		btnAceptar.setBackground(new Color(255, 165, 0));
-		
-		JLabel lblIntroduceNombre = new JLabel("Introduce tu nombre");
-		lblIntroduceNombre.setBounds(243, 449, 164, 23);
-		panelIntro.add(lblIntroduceNombre);
-		lblIntroduceNombre.setBackground(new Color(255, 255, 255));
-		lblIntroduceNombre.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		
-		JLabel lblTitulo = new JLabel("E-CARD");
-		lblTitulo.setBounds(191, 372, 267, 52);
-		panelIntro.add(lblTitulo);
-		lblTitulo.setForeground(Color.BLACK);
-		lblTitulo.setBackground(Color.WHITE);
-		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 38));
-		
-		JLabel lblEmperadorInicio = new JLabel("");
-		lblEmperadorInicio.setBounds(123, 25, 400, 336);
-		panelIntro.add(lblEmperadorInicio);
-		lblEmperadorInicio.setVerticalAlignment(SwingConstants.TOP);
-		lblEmperadorInicio.setIcon(new ImageIcon(Menu.class.getResource("/res/emperor.jpg")));
-		
-		JTextPane textNombre = new JTextPane();
-		textNombre.setBounds(243, 480, 164, 23);
-		panelIntro.add(textNombre);
-		textNombre.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textNombre.setBackground(new Color(230, 230, 250));
-		btnAceptar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(textNombre.getText()!=null) {
-					nombre = textNombre.getText()+"\r\n";
-				}
-				lbWelcome.setText("Bienvenido " + nombre);
-				switchPanels(panelMenu);
-			}
-		});
-		
-		panelReglas = new JPanel();
-		panelReglas.setBackground(new Color(255, 250, 205));
-		panelReglas.setBounds(0, 0, 652, 593);
-		layeredPanel.add(panelReglas);
-		panelReglas.setLayout(null);
-		
-		JLabel lblPantallaReglas = new JLabel("REGLAS E-CARD");
-		lblPantallaReglas.setFont(new Font("Tahoma", Font.BOLD, 32));
-		lblPantallaReglas.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPantallaReglas.setBounds(162, 22, 335, 57);
-		panelReglas.add(lblPantallaReglas);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 83, 632, 458);
-		panelReglas.add(scrollPane);
-		
-		JTextPane txtReglas = new JTextPane();
-		scrollPane.setViewportView(txtReglas);
-		txtReglas.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		//REGLAS DEL JUEGO:
-		txtReglas.setText("Juego de cartas para dos jugadores.\r\n\t\r\n\nTIPOS DE CARTAS:\r\n\n3 tipos de cartas: Emperador, Ciudadano y Esclavo.\r\n\t\n"
-				+ "El Emperador esta en lo mas alto de la sociedad por lo que derrotará a los Ciudadanos, pero perderá contra el Esclavo.\r\n\t\n"
-				+ "Los Ciudadanos necesitan el dinero del Emperador por lo que perderán contra él, pero derrotarán al Esclavo, el cual se sitúa en lo más bajo de la sociedad.\r\n\t\n"
-				+ "El Esclavo perderá contra los Ciudadanos, pero ganará al Emperador puesto que el Esclavo no tiene acceso a dinero y no tiene nada que perder.\r\n\n\nMAZOS Y RONDAS:\r\n\t\n"
-				+ "Dos mazos: Lado Emperador (1 Emperador + 4 Ciudadanos) y Lado Esclavo (1 Esclavo + 4 Ciudadanos).\r\n\t\n"
-				+ "Como es mucho más dificil ganar en el Lado Esclavo, la victoria valdrá 5 veces más.\r\n\t\n"
-				+ "Los lados no son fijos, se irán rotando a lo largo de la partida.\r\n\t\n"
-				+ "En la partida, cada jugador jugara 2 veces en el Lado Emperador y otras 2 en el Lado Esclavo (4 turnos).\r\n\t\n"
-				+ "Se hacen 3 rondas en cada lado y se cambia al otro así hasta terminar (12 rondas en total).\r\n\t\r\n\t\r\n"
-				+ "\nPOSIBLES JUGADAS:\r\n\nEn cada jugada, se pondra un carta de tu mazo mientras tu rival pondra otra del suyo, una carta determinada se puede usar una única vez por ronda.\r\n\t\n"
-				+ "Se realizaran los enfretamientos de las cartas puestas y se distribuiran los puntos de la siguiente manera:\r\n\t\n"
-				+ "Emperador vs Ciudadano: +1 para el jugador en el Lado Emperador.\r\n\t\n"
-				+ "Emperador vs Esclavo: +5 para el jugador en el Lado Esclavo.\r\n\t\n"
-				+ "Esclavo vs Ciudadano: +1 para el jugador en el Lado Emperador.\r\n\t\n"
-				+ "Ciudadano vs Ciudadano: Continua la partida hasta que se de una de las tres jugadas de arriba y se eliminan los ciudadanos usados de ambos mazos (+0).\r\n\t");
-
-		JButton btnMenuPrincipal = new JButton("Menú principal");
-		btnMenuPrincipal.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				switchPanels(panelMenu);
-			}
-		});
-		btnMenuPrincipal.setBounds(487, 559, 134, 23);
-		panelReglas.add(btnMenuPrincipal);
-		
-		switchPanels(panelIntro);
 	}
 }
