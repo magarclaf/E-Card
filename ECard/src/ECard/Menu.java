@@ -137,8 +137,6 @@ public class Menu extends JFrame {
 			}
 		});
 		
-		switchPanels(panelIntro);
-		
 		hostcliente = new JPanel();
 		hostcliente.setBackground(new Color(255, 228, 181));
 		hostcliente.setBounds(0, 0, 652, 593);
@@ -375,7 +373,7 @@ public class Menu extends JFrame {
 		btHistorial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switchPanels(panelHistorial);
-				try(DataInputStream dis = new DataInputStream( new FileInputStream("src/res/historial.txt"))){
+				try(DataInputStream dis = new DataInputStream( new FileInputStream("historial.txt"))){
 					String linea = dis.readLine();
 					String hist = "";
 					while(linea != null) {
@@ -410,5 +408,7 @@ public class Menu extends JFrame {
 		lbWelcome.setBounds(220, 110, 196, 28);
 		lbWelcome.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		panelMenu.add(lbWelcome);
+		
+		switchPanels(panelIntro);
 	}
 }

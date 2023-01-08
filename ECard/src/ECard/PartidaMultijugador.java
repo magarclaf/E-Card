@@ -3,6 +3,7 @@ package ECard;
 import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -368,9 +369,13 @@ public class PartidaMultijugador extends JFrame {
 		this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 try {
-                    dos.writeBytes("Desconexión\r\n");
-                    dos.flush();
                     dispose();
+                    String aux2 = "";
+                    while(!aux2.equals("Desconexión")) {
+                    	aux2 = dis.readLine();
+                    	dos.writeBytes("Desconexión\r\n");
+                    	dos.flush();
+                    }
                     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
@@ -460,7 +465,14 @@ public class PartidaMultijugador extends JFrame {
 			turno=0;
 		}
 		if (ronda == 4) {
-			try(DataOutputStream dos = new DataOutputStream(new FileOutputStream("src/res/historial.txt",true))){
+			File f = new File("historial.txt");
+			try {
+				f.createNewFile();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try(DataOutputStream dos = new DataOutputStream(new FileOutputStream(f,true))){
 				String result;				
 				if (contadorJugador > contadorRival) {
 					result = "Resultado: " + resultado.getText().replaceAll("\s+","") + " - " + nombreJugador1 + " has ganado contra " + nombreJugador2;
